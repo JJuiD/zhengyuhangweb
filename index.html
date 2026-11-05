@@ -68,6 +68,7 @@
 
     /* ========== 搜索框 ========== */
     .search-box { position: relative; margin-bottom: 24px; }
+    .search-row { position: relative; }
     .search-box input {
       width: 100%; padding: 12px 16px 12px 42px;
       font-size: 0.95rem; font-family: inherit;
@@ -255,6 +256,45 @@
     }
     .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
 
+    /* ========== 筛选类 ========== */
+    .search-wrap { position: relative; display: inline-block; width: 300px; max-width: 100%; }
+    .search-wrap .search-input {
+      width: 100%; padding: 9px 34px 9px 36px; font-size: 0.9rem;
+      border: 1px solid var(--border); border-radius: 20px; outline: none;
+      font-family: inherit; transition: border-color 0.15s;
+      background: #fff; color: var(--text);
+    }
+    .search-wrap .search-input:focus { border-color: var(--primary); }
+    .search-wrap .s-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5; font-size: 0.9rem; }
+    .search-wrap .s-clear {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      cursor: pointer; color: var(--text-secondary); display: none; font-size: 0.9rem;
+    }
+    .search-wrap .s-clear:hover { color: var(--text); }
+    .search-result { margin-top: 10px; font-size: 0.84rem; color: var(--text-secondary); }
+    .filter-chip {
+      display: inline-block; padding: 6px 14px; border-radius: 18px; cursor: pointer;
+      font-size: 0.84rem; background: #fff; border: 1px solid var(--border);
+      color: var(--text-secondary); transition: all 0.15s; user-select: none;
+    }
+    .filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-chip.selected { background: #e3edff; border-color: var(--primary); color: var(--primary); font-weight: bold; }
+    .filter-result { margin-top: 10px; font-size: 0.84rem; color: var(--text-secondary); }
+    .seg { display: inline-flex; background: #eef2f8; border-radius: 9px; padding: 3px; }
+    .seg-item {
+      padding: 7px 20px; font-size: 0.86rem; border-radius: 7px;
+      cursor: pointer; color: var(--text-secondary); transition: all 0.15s;
+      user-select: none; font-family: inherit; border: none; background: transparent;
+    }
+    .seg-item.active { background: #fff; color: var(--primary); font-weight: bold; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12); }
+    .seg-result { margin-top: 10px; font-size: 0.84rem; color: var(--text-secondary); }
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+      background: #f6f9fc; padding: 14px 16px; border-radius: 10px;
+    }
+    .filter-bar .field { min-width: 150px; flex: 0 1 auto; }
+    .bar-actions { display: flex; gap: 8px; }
+
     /* ========== 下拉菜单 / 气泡卡片 / 抽屉 ========== */
     .dd-wrap, .pop-wrap { position: relative; display: inline-block; }
     .dd-menu {
@@ -438,6 +478,14 @@
       <h1 class="page-title">Web UI 控件速查词典</h1>
       <p class="page-desc">设计 UI 时想用某个控件但叫不上名字？用「口语描述」搜一下，或在下方选分类逐个查看。每个词条都有：专业术语名、口语叫法、使用场景和能直接上手的演示。</p>
 
+      <div class="search-box">
+        <div class="search-row">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="用口语描述试试：弹窗、转圈圈、打勾的小方框、页码…" />
+        </div>
+        <div class="search-tip">支持搜索：中文名 / 英文名 / 口语叫法 / 用途关键词</div>
+      </div>
+
       <div class="ctrl-cats" id="ctrl-cats"></div>
       <div class="ctrl-list" id="ctrl-list"></div>
 
@@ -447,11 +495,6 @@
         <button class="bar-btn" id="next-ctrl">下一个 →</button>
       </div>
 
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="用口语描述试试：弹窗、转圈圈、打勾的小方框、页码…" />
-        <div class="search-tip">支持搜索：中文名 / 英文名 / 口语叫法 / 用途关键词</div>
-      </div>
       <div class="no-result" id="no-result">😖 没找到匹配的控件，换个说法试试？</div>
 
       <div id="controls-flow">
@@ -606,6 +649,83 @@
             <input type="range" id="demo-slider" min="0" max="100" value="40" />
             <span class="slider-value" id="slider-value">40</span>
           </div>
+        </div>
+      </div>
+
+      <!-- ============ 筛选类 ============ -->
+      <div class="group-title" data-group>🔽 筛选类</div>
+
+      <div class="demo-card" data-terms="搜索框 search 放大镜 搜东西的框 查找 关键词输入 搜索栏 搜索输入">
+        <div class="card-head"><h2>搜索框</h2><span class="en">Search Box</span></div>
+        <div class="alias">💬 口语：带放大镜的输入框 / 搜东西的框 / 输入关键词查找的那种</div>
+        <div class="usage"><b>用在：</b>在大量内容里按关键词快速找到目标，常配「清空按钮 ✕」和「实时结果提示」。试试输入再点 ✕ ↓</div>
+        <div class="demo-area">
+          <div class="search-wrap">
+            <span class="s-icon">🔍</span>
+            <input class="search-input" id="demo-search-input" type="text" placeholder="搜索…" />
+            <span class="s-clear" id="demo-search-clear">✕</span>
+          </div>
+          <div class="search-result" id="demo-search-result">输入关键词试试 ↑</div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="筛选栏 filter bar 条件查询 列表上面那排条件 查询表单 高级筛选 查询重置按钮 筛选条件">
+        <div class="card-head"><h2>筛选栏</h2><span class="en">Filter Bar / Query Form</span></div>
+        <div class="alias">💬 口语：列表上面那一排条件下拉 + 查询、重置按钮 / 高级筛选那种灰色条</div>
+        <div class="usage"><b>用在：</b>数据列表（订单、任务、日志）上方，按多个条件组合过滤。点「查询」才生效的叫表单式筛选；点条件立即生效的叫即时筛选。</div>
+        <div class="demo-area">
+          <div class="filter-bar">
+            <div class="field">
+              <label>状态</label>
+              <select class="select" id="bar-status">
+                <option>全部</option><option>进行中</option><option>已完成</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>类型</label>
+              <select class="select" id="bar-type">
+                <option>全部</option><option>项目</option><option>任务</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>日期</label>
+              <input class="input" type="date" id="bar-date" />
+            </div>
+            <div class="bar-actions">
+              <button class="btn btn-primary" id="bar-query">查询</button>
+              <button class="btn btn-secondary" id="bar-reset">重置</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="筛选标签 filter chips 多选标签 点一下亮起来 选标签过滤 标签筛选 选中变色的胶囊">
+        <div class="card-head"><h2>筛选标签</h2><span class="en">Filter Chips</span></div>
+        <div class="alias">💬 口语：点一下就亮起来的小标签 / 能同时选好几个的标签组 / 选中变色的胶囊</div>
+        <div class="usage"><b>用在：</b>轻量多选筛选，比筛选栏轻快、选中立刻生效。电商里的「品牌」「尺码」筛选就是它。点下面试试 ↓</div>
+        <div class="demo-area">
+          <div id="filter-chips">
+            <span class="filter-chip">前端</span>
+            <span class="filter-chip">后端</span>
+            <span class="filter-chip">设计</span>
+            <span class="filter-chip">产品</span>
+            <span class="filter-chip">运维</span>
+          </div>
+          <div class="filter-result" id="filter-chip-result">未选任何标签（显示全部）</div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="分段控件 segmented 一排连在一起的切换按钮 ios切换 视图切换 分段选择 三个一组的切换">
+        <div class="card-head"><h2>分段控件</h2><span class="en">Segmented Control</span></div>
+        <div class="alias">💬 口语：一排连在一起、凹下去一个的切换按钮 / iPhone 设置里那种 / 小切换条</div>
+        <div class="usage"><b>用在：</b>2~5 个互斥选项的快速切换（视图、状态过滤）。和标签页的区别：它更像一组按钮，常用来过滤列表而不是换内容区。</div>
+        <div class="demo-area">
+          <div class="seg" id="demo-seg">
+            <button class="seg-item active">全部</button>
+            <button class="seg-item">进行中</button>
+            <button class="seg-item">已完成</button>
+          </div>
+          <div class="seg-result" id="seg-result">当前视图：全部</div>
         </div>
       </div>
 
@@ -1128,6 +1248,60 @@
     document.getElementById('drawer-close-btn').addEventListener('click', closeDrawer);
     document.getElementById('drawer-ok-btn').addEventListener('click', closeDrawer);
     drawerMask.addEventListener('click', closeDrawer);
+
+    // ========== 筛选类演示 ==========
+    // 搜索框：输入显示结果提示 + 清空按钮
+    const searchDemo = document.getElementById('demo-search-input');
+    const searchClear = document.getElementById('demo-search-clear');
+    const searchResult = document.getElementById('demo-search-result');
+    searchDemo.addEventListener('input', () => {
+      searchClear.style.display = searchDemo.value ? 'block' : 'none';
+      searchResult.textContent = searchDemo.value
+        ? '🔍 正在搜索「' + searchDemo.value + '」…找到 3 条相关结果'
+        : '输入关键词试试 ↑';
+    });
+    searchClear.addEventListener('click', () => {
+      searchDemo.value = '';
+      searchClear.style.display = 'none';
+      searchResult.textContent = '输入关键词试试 ↑';
+      searchDemo.focus();
+    });
+
+    // 筛选标签：多选切换 + 结果联动
+    const chipResult = document.getElementById('filter-chip-result');
+    document.querySelectorAll('#filter-chips .filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('selected');
+        const picked = [...document.querySelectorAll('#filter-chips .filter-chip.selected')].map(c => c.textContent.trim());
+        chipResult.textContent = picked.length
+          ? '已选：' + picked.join('、') + ' → 模拟过滤出 ' + (picked.length * 5) + ' 条结果'
+          : '未选任何标签（显示全部）';
+      });
+    });
+
+    // 分段控件：互斥切换
+    const segResult = document.getElementById('seg-result');
+    document.querySelectorAll('#demo-seg .seg-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.closest('.seg').querySelectorAll('.seg-item').forEach(s => s.classList.remove('active'));
+        item.classList.add('active');
+        segResult.textContent = '当前视图：' + item.textContent.trim();
+      });
+    });
+
+    // 筛选栏：查询 / 重置
+    const barStatus = document.getElementById('bar-status');
+    const barType = document.getElementById('bar-type');
+    const barDate = document.getElementById('bar-date');
+    document.getElementById('bar-query').addEventListener('click', () => {
+      showToast('按条件查询：状态=' + barStatus.value + '，类型=' + barType.value + '，日期=' + (barDate.value || '不限'));
+    });
+    document.getElementById('bar-reset').addEventListener('click', () => {
+      barStatus.value = '全部';
+      barType.value = '全部';
+      barDate.value = '';
+      showToast('筛选条件已重置');
+    });
 
     // ========== 模态框 ==========
     const dialog = document.getElementById('demo-dialog');
