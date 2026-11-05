@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>个人主页</title>
+  <title>个人主页 · UI 控件速查</title>
   <style>
     :root {
       --primary: #2a5298;
@@ -47,16 +47,11 @@
     .brand small { display: block; font-size: 0.75rem; font-weight: normal; opacity: 0.65; margin-top: 4px; }
     .nav { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.92rem;
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 0.92rem;
       color: rgba(255, 255, 255, 0.75);
-      transition: all 0.2s;
-      user-select: none;
+      transition: all 0.2s; user-select: none;
     }
     .nav-item:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
     .nav-item.active { background: rgba(255, 255, 255, 0.18); color: #fff; font-weight: bold; }
@@ -69,18 +64,53 @@
     .page.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     .page-title { font-size: 1.5rem; margin-bottom: 6px; }
-    .page-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px; }
+    .page-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.7; }
 
+    /* ========== 搜索框 ========== */
+    .search-box { position: relative; margin-bottom: 24px; }
+    .search-box input {
+      width: 100%; padding: 12px 16px 12px 42px;
+      font-size: 0.95rem; font-family: inherit;
+      border: 2px solid var(--border); border-radius: 12px;
+      outline: none; transition: border-color 0.15s;
+    }
+    .search-box input:focus { border-color: var(--primary); }
+    .search-box .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); opacity: 0.45; }
+    .search-tip { font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; }
+    .no-result {
+      display: none; text-align: center; padding: 60px 20px;
+      background: var(--card-bg); border: 1px dashed var(--border);
+      border-radius: var(--radius); color: var(--text-secondary);
+    }
+
+    /* ========== 分类标题 ========== */
+    .group-title {
+      font-size: 1.05rem; font-weight: bold;
+      margin: 28px 0 14px; color: var(--primary-dark);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ========== 术语卡片 ========== */
     .demo-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 22px 24px;
-      margin-bottom: 20px;
+      padding: 20px 24px;
+      margin-bottom: 18px;
     }
-    .demo-card h2 { font-size: 1.02rem; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .card-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .card-head h2 { font-size: 1.05rem; }
+    .card-head .en { font-size: 0.8rem; color: var(--text-secondary); font-style: italic; }
+    .alias {
+      margin-top: 8px; font-size: 0.84rem; color: #9a6700;
+      background: #fff7e6; border-radius: 8px; padding: 6px 12px;
+      line-height: 1.6;
+    }
+    .usage { margin-top: 8px; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; }
+    .usage b { color: #147a4c; font-weight: normal; }
+    .demo-area { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
     .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-    .col { display: flex; flex-direction: column; gap: 14px; }
+    .col { display: flex; flex-direction: column; gap: 12px; }
 
     /* ========== 按钮 ========== */
     .btn {
@@ -101,7 +131,7 @@
     .btn:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; transform: none; }
 
     /* ========== 输入类 ========== */
-    .field { display: flex; flex-direction: column; gap: 6px; min-width: 220px; }
+    .field { display: flex; flex-direction: column; gap: 6px; min-width: 210px; }
     .field label { font-size: 0.82rem; color: var(--text-secondary); }
     .input, .textarea, .select {
       padding: 9px 12px; font-size: 0.9rem;
@@ -111,7 +141,7 @@
     }
     .input:focus, .textarea:focus, .select:focus { border-color: var(--primary); }
     .input:disabled, .textarea:disabled { background: #f1f5f9; cursor: not-allowed; }
-    .textarea { resize: vertical; min-height: 64px; }
+    .textarea { resize: vertical; min-height: 60px; }
 
     /* ========== 复选 / 单选 / 开关 ========== */
     .check { display: flex; align-items: center; gap: 7px; font-size: 0.9rem; cursor: pointer; }
@@ -133,7 +163,7 @@
     /* ========== 滑块 / 进度条 ========== */
     .slider-wrap { display: flex; align-items: center; gap: 12px; min-width: 260px; }
     input[type="range"] { flex: 1; accent-color: var(--primary); cursor: pointer; }
-    .slider-value { min-width: 34px; text-align: center; font-size: 0.88rem; color: var(--primary); font-weight: bold; }
+    .slider-value { min-width: 40px; text-align: center; font-size: 0.88rem; color: var(--primary); font-weight: bold; }
     .progress { background: #e8eef6; border-radius: 20px; height: 12px; overflow: hidden; flex: 1; min-width: 240px; }
     .progress-inner {
       height: 100%; width: 0;
@@ -178,6 +208,117 @@
     dialog h3 { margin-bottom: 10px; }
     dialog p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
 
+    /* ========== 标签页 Tabs ========== */
+    .tabs-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--border); }
+    .tab {
+      padding: 9px 18px; font-size: 0.9rem; cursor: pointer;
+      color: var(--text-secondary); border-radius: 8px 8px 0 0;
+      border-bottom: 2px solid transparent; margin-bottom: -2px;
+      transition: all 0.15s; user-select: none;
+    }
+    .tab:hover { color: var(--primary); background: #f3f7fc; }
+    .tab.active { color: var(--primary); font-weight: bold; border-bottom-color: var(--primary); }
+    .tab-panel { display: none; padding: 16px 4px 4px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+    .tab-panel.active { display: block; }
+
+    /* ========== 折叠面板 Accordion ========== */
+    details {
+      border: 1px solid var(--border); border-radius: 8px;
+      margin-bottom: 8px; overflow: hidden;
+    }
+    summary {
+      padding: 11px 14px; font-size: 0.9rem; cursor: pointer;
+      background: #f6f9fc; user-select: none; list-style: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: "▸"; transition: transform 0.2s; color: var(--primary); }
+    details[open] summary::before { transform: rotate(90deg); }
+    details .details-body { padding: 12px 14px; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+
+    /* ========== 工具提示 Tooltip ========== */
+    .tooltip {
+      position: relative; display: inline-block;
+      border-bottom: 1px dashed var(--primary); cursor: help;
+    }
+    .tooltip .tooltip-text {
+      visibility: hidden; position: absolute; bottom: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%);
+      background: #2c3e50; color: #fff; font-size: 0.78rem;
+      padding: 6px 12px; border-radius: 6px; white-space: nowrap;
+      opacity: 0; transition: opacity 0.15s; z-index: 10;
+    }
+    .tooltip .tooltip-text::after {
+      content: ""; position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: #2c3e50;
+    }
+    .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+    /* ========== Toast ========== */
+    #toast {
+      position: fixed; bottom: 36px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #2c3e50; color: #fff;
+      padding: 11px 22px; border-radius: 10px; font-size: 0.9rem;
+      opacity: 0; pointer-events: none;
+      transition: all 0.3s; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 999;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ========== 加载 Loading ========== */
+    .spinner {
+      width: 34px; height: 34px;
+      border: 4px solid #e3eaf3; border-top-color: var(--primary);
+      border-radius: 50%; animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ========== 面包屑 ========== */
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-secondary); }
+    .breadcrumb a { color: var(--primary); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb .sep { color: #c0cbda; }
+
+    /* ========== 分页 ========== */
+    .pagination { display: flex; gap: 6px; }
+    .page-btn {
+      min-width: 34px; height: 34px; padding: 0 8px;
+      border: 1px solid var(--border); background: #fff;
+      border-radius: 8px; cursor: pointer; font-size: 0.88rem;
+      color: var(--text); transition: all 0.15s; font-family: inherit;
+    }
+    .page-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .page-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* ========== 步骤条 ========== */
+    .steps { display: flex; align-items: center; }
+    .step { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+    .step .step-circle {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #e8eef6; color: var(--text-secondary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; transition: all 0.2s;
+    }
+    .step .step-label { font-size: 0.78rem; color: var(--text-secondary); }
+    .step.done .step-circle { background: var(--primary); color: #fff; }
+    .step.done .step-label { color: var(--primary); }
+    .step-line { width: 64px; height: 2px; background: #e8eef6; margin: 0 8px 20px; }
+    .step-line.done { background: var(--primary); }
+
+    /* ========== 头像 ========== */
+    .avatar {
+      border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; flex-shrink: 0;
+    }
+
+    /* ========== 空状态 ========== */
+    .empty-state { text-align: center; padding: 36px 20px; color: var(--text-secondary); }
+    .empty-state .icon { font-size: 2.4rem; margin-bottom: 10px; }
+    .empty-state p { font-size: 0.88rem; }
+
     /* ========== 占位页 ========== */
     .placeholder {
       background: var(--card-bg); border: 1px dashed var(--border);
@@ -201,7 +342,7 @@
   <aside class="sidebar">
     <div class="brand">个人主页<small>zyh.pages</small></div>
     <nav class="nav">
-      <span class="nav-item active" data-page="controls"><span class="dot">🧩</span>UI 控件展示</span>
+      <span class="nav-item active" data-page="controls"><span class="dot">🧩</span>UI 控件速查</span>
       <span class="nav-item" data-page="charts"><span class="dot">📊</span>数据图表<span class="soon">建设中</span></span>
       <span class="nav-item" data-page="about"><span class="dot">👤</span>关于<span class="soon">建设中</span></span>
     </nav>
@@ -209,142 +350,390 @@
 
   <!-- 右侧内容 -->
   <main class="content">
-    <!-- 第一个页面：Web 常用 UI 控件全展示 -->
+    <!-- UI 控件速查词典 -->
     <section id="page-controls" class="page active">
-      <h1 class="page-title">Web 常用 UI 控件展示</h1>
-      <p class="page-desc">纯 HTML + CSS + JavaScript 实现，涵盖日常开发中的常用控件</p>
+      <h1 class="page-title">Web UI 控件速查词典</h1>
+      <p class="page-desc">设计 UI 时想用某个控件但叫不上名字？在这里用「口语描述」搜一下，就能看到它长什么样、专业术语叫什么。每个控件都可以直接上手玩。</p>
 
-      <div class="demo-card">
-        <h2>按钮 Button</h2>
-        <div class="row">
-          <button class="btn btn-primary">主要按钮</button>
-          <button class="btn btn-secondary">次要按钮</button>
-          <button class="btn btn-danger">危险按钮</button>
-          <button class="btn btn-ghost">幽灵按钮</button>
-          <button class="btn btn-primary" disabled>禁用按钮</button>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="用口语描述试试：弹窗、转圈圈、打勾的小方框、页码…" />
+        <div class="search-tip">支持搜索：中文名 / 英文名 / 口语叫法 / 用途关键词</div>
+      </div>
+      <div class="no-result" id="no-result">😖 没找到匹配的控件，换个说法试试？</div>
+
+      <!-- ============ 输入类 ============ -->
+      <div class="group-title" data-group>⌨️ 输入类</div>
+
+      <div class="demo-card" data-terms="按钮 能点的方块 确定取消 点击点击的 button 点击 提交">
+        <div class="card-head"><h2>按钮</h2><span class="en">Button</span></div>
+        <div class="alias">💬 口语：能点的方块 / 确定、取消那种 / 点一下做事的东西</div>
+        <div class="usage"><b>用在：</b>提交表单、确认操作、触发动作。按重要程度选颜色，一个区域只放一个主要按钮。</div>
+        <div class="demo-area">
+          <div class="row">
+            <button class="btn btn-primary">主要按钮</button>
+            <button class="btn btn-secondary">次要按钮</button>
+            <button class="btn btn-danger">危险按钮（删除用红色）</button>
+            <button class="btn btn-ghost">幽灵按钮（描边）</button>
+            <button class="btn btn-primary" disabled>禁用按钮（灰色不可点）</button>
+          </div>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>输入框 Input</h2>
-        <div class="row">
-          <div class="field">
-            <label>文本框</label>
-            <input class="input" type="text" placeholder="请输入内容…" />
+      <div class="demo-card" data-terms="文本框 打字的框 输入框 填写 input 表单填字">
+        <div class="card-head"><h2>文本输入框</h2><span class="en">Text Input</span></div>
+        <div class="alias">💬 口语：能打字的框 / 填东西的框 / 输入内容那条</div>
+        <div class="usage"><b>用在：</b>让用户输入单行文字，如搜索、账号、昵称。灰色不可用的叫「禁用状态」。</div>
+        <div class="demo-area">
+          <div class="row">
+            <div class="field">
+              <label>普通</label>
+              <input class="input" type="text" placeholder="请输入内容…" />
+            </div>
+            <div class="field">
+              <label>带提示文字（占位符 Placeholder）</label>
+              <input class="input" type="text" placeholder="我是占位提示…" />
+            </div>
+            <div class="field">
+              <label>禁用状态</label>
+              <input class="input" type="text" value="不可编辑" disabled />
+            </div>
           </div>
-          <div class="field">
-            <label>密码框</label>
-            <input class="input" type="password" placeholder="请输入密码" />
-          </div>
-          <div class="field">
-            <label>禁用状态</label>
-            <input class="input" type="text" value="不可编辑" disabled />
-          </div>
-        </div>
-        <div class="field" style="margin-top:14px">
-          <label>多行文本 Textarea</label>
-          <textarea class="textarea" placeholder="请输入多行内容…"></textarea>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>选择类 Select / Checkbox / Radio / Switch</h2>
-        <div class="row" style="align-items:flex-start">
-          <div class="field">
-            <label>下拉选择</label>
+      <div class="demo-card" data-terms="密码框 打字变圆点 星号 隐藏 password 圆点框">
+        <div class="card-head"><h2>密码输入框</h2><span class="en">Password Input</span></div>
+        <div class="alias">💬 口语：打字变圆点 ●●● / 星号框 / 看不见字的框</div>
+        <div class="usage"><b>用在：</b>输入密码等不想被人看到的内容，输入内容自动打码显示。</div>
+        <div class="demo-area">
+          <div class="field" style="max-width:260px">
+            <label>试着输入一下</label>
+            <input class="input" type="password" placeholder="输入会变成圆点" />
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="多行文本 留言框 大框 textarea 打很多行字 备注 介绍框">
+        <div class="card-head"><h2>多行文本框</h2><span class="en">Textarea</span></div>
+        <div class="alias">💬 口语：能打很多行字的大框 / 留言框 / 备注、简介那种</div>
+        <div class="usage"><b>用在：</b>留言、备注、简介等需要多行文字的地方，右下角可以拖拽调整大小。</div>
+        <div class="demo-area">
+          <div class="field" style="max-width:100%">
+            <textarea class="textarea" placeholder="请输入多行内容…（右下角可拉伸）"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="下拉框 下拉菜单 点开选一个 列表选择 select 选框 弹出一列">
+        <div class="card-head"><h2>下拉选择框</h2><span class="en">Select / Dropdown</span></div>
+        <div class="alias">💬 口语：点一下弹出一列选项的框 / 收起来的选项列表 / 选城市那种</div>
+        <div class="usage"><b>用在：</b>选项多而页面空间有限时，收起只占一行，点开后展开所有选项选一个。</div>
+        <div class="demo-area">
+          <div class="field" style="min-width:240px">
+            <label>点我展开选项</label>
             <select class="select">
-              <option>选项一</option>
-              <option>选项二</option>
-              <option>选项三</option>
+              <option>北京</option>
+              <option>上海</option>
+              <option>广州</option>
+              <option>深圳</option>
             </select>
           </div>
-          <div class="col">
-            <label class="check"><input type="checkbox" checked /> 复选项 A</label>
-            <label class="check"><input type="checkbox" /> 复选项 B</label>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="日期 时间 日历 选日子 选时间 颜色 picker 选颜色 调色 date time color">
+        <div class="card-head"><h2>日期 / 时间 / 颜色选择器</h2><span class="en">Date / Time / Color Picker</span></div>
+        <div class="alias">💬 口语：选日期弹日历的 / 选几点几分的 / 调颜色的色板</div>
+        <div class="usage"><b>用在：</b>选日期（点击弹出日历）、选时间、选颜色，避免用户手动输入格式错误。</div>
+        <div class="demo-area">
+          <div class="row">
+            <div class="field">
+              <label>日期（点击弹日历）</label>
+              <input class="input" type="date" />
+            </div>
+            <div class="field">
+              <label>时间</label>
+              <input class="input" type="time" />
+            </div>
+            <div class="field">
+              <label>颜色</label>
+              <input class="input" type="color" value="#2a5298" style="height:40px;padding:4px" />
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- ============ 选择类 ============ -->
+      <div class="group-title" data-group>✅ 选择类</div>
+
+      <div class="demo-card" data-terms="复选框 打勾的小方框 多选 勾选 checkbox 方框打勾 能选好几个">
+        <div class="card-head"><h2>复选框</h2><span class="en">Checkbox</span></div>
+        <div class="alias">💬 口语：打勾的小方框 ☑ / 能同时选好几个的 / 勾选框</div>
+        <div class="usage"><b>用在：</b>多选场景，如勾选多个文件、同意多个协议。方形，选中打勾。</div>
+        <div class="demo-area">
           <div class="col">
-            <label class="check"><input type="radio" name="demo-radio" checked /> 单选项 1</label>
+            <label class="check"><input type="checkbox" checked /> 复选项 A（可多选）</label>
+            <label class="check"><input type="checkbox" /> 复选项 B</label>
+            <label class="check"><input type="checkbox" /> 复选项 C</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="单选 小圆圈 圆点 只能选一个 radio 圆圈点一下 选一个">
+        <div class="card-head"><h2>单选按钮</h2><span class="en">Radio Button</span></div>
+        <div class="alias">💬 口语：小圆圈 ⦿ 只能选一个的 / 点一下中间变实心</div>
+        <div class="usage"><b>用在：</b>互斥选择，如性别、支付方式——多个选项里只能挑一个。圆形，选中变实心点。</div>
+        <div class="demo-area">
+          <div class="col">
+            <label class="check"><input type="radio" name="demo-radio" checked /> 单选项 1（选了我就不能选 2）</label>
             <label class="check"><input type="radio" name="demo-radio" /> 单选项 2</label>
           </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="开关 toggle 拨动 电闸 开了关了 左右拨 小滑块 switch 开关按钮">
+        <div class="card-head"><h2>开关</h2><span class="en">Switch / Toggle</span></div>
+        <div class="alias">💬 口语：拨来拨去的小滑块 / 电闸 / 一拨就开、再拨就关</div>
+        <div class="usage"><b>用在：</b>立即生效的开关场景，如「推送通知：开/关」。和单选不同——它只控制一个功能的启停。</div>
+        <div class="demo-area">
+          <div class="row" style="gap:28px">
+            <label class="check"><span class="switch"><input type="checkbox" checked /><span class="slider-track"></span></span> 推送通知（开）</label>
+            <label class="check"><span class="switch"><input type="checkbox" /><span class="slider-track"></span></span> 省流模式（关）</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="滑块 slider 拖动 拖着圆点 调大小 调音量 拉杆 滑动条">
+        <div class="card-head"><h2>滑块</h2><span class="en">Slider</span></div>
+        <div class="alias">💬 口语：一根杆拖着圆点左右拉 / 调音量那种 / 拖动条</div>
+        <div class="usage"><b>用在：</b>在一个连续范围内选值，如音量、透明度、价格区间。试试拖动 ↓</div>
+        <div class="demo-area">
+          <div class="slider-wrap">
+            <input type="range" id="demo-slider" min="0" max="100" value="40" />
+            <span class="slider-value" id="slider-value">40</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ 反馈类 ============ -->
+      <div class="group-title" data-group>🔔 反馈类</div>
+
+      <div class="demo-card" data-terms="提示条 alert 横幅通知 彩色长条 一长条 警告条 banner 提醒">
+        <div class="card-head"><h2>提示条</h2><span class="en">Alert / Banner</span></div>
+        <div class="alias">💬 口语：一长条彩色通知 / 横幅提醒 / 页面顶部那条警告</div>
+        <div class="usage"><b>用在：</b>常驻在页面里的重要提示，如系统公告、表单错误汇总。颜色区分等级：蓝=信息、绿=成功、黄=警告、红=错误。</div>
+        <div class="demo-area">
           <div class="col">
-            <label class="check"><span class="switch"><input type="checkbox" checked /><span class="slider-track"></span></span> 开关：开</label>
-            <label class="check"><span class="switch"><input type="checkbox" /><span class="slider-track"></span></span> 开关：关</label>
+            <div class="alert alert-info">ℹ️ 信息提示（info）：这是一条普通信息。</div>
+            <div class="alert alert-success">✅ 成功提示（success）：操作已成功完成。</div>
+            <div class="alert alert-warning">⚠️ 警告提示（warning）：请注意潜在的风险。</div>
+            <div class="alert alert-error">❌ 错误提示（error）：操作失败，请重试。</div>
           </div>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>日期时间与颜色</h2>
-        <div class="row">
-          <div class="field">
-            <label>日期</label>
-            <input class="input" type="date" />
+      <div class="demo-card" data-terms="toast 气泡通知 右下角弹一下 消息提示 弹一下消失 小黑条 轻提示">
+        <div class="card-head"><h2>消息提示</h2><span class="en">Toast</span></div>
+        <div class="alias">💬 口语：屏幕下面弹一下就消失的小黑条 / 轻提示 / 气泡通知</div>
+        <div class="usage"><b>用在：</b>操作成功/失败的轻量反馈，几秒后自动消失，不打断用户。和模态框的区别：它不需要点关闭。</div>
+        <div class="demo-area">
+          <button class="btn btn-primary" id="toast-btn">点我试试 Toast</button>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="模态框 modal 弹窗 弹出来的小窗 对话框 dialog 遮罩 中间弹出">
+        <div class="card-head"><h2>模态框</h2><span class="en">Modal / Dialog</span></div>
+        <div class="alias">💬 口语：弹出来的小窗 / 弹窗 / 背景变暗中间凸出一块</div>
+        <div class="usage"><b>用在：</b>需要用户必须处理的重要交互（确认删除、填写表单）。会挡住页面其他操作，所以不要滥用。</div>
+        <div class="demo-area">
+          <button class="btn btn-primary" id="open-dialog-btn">打开模态框</button>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="tooltip 悬停提示 鼠标放上去出现小黑字 气泡说明 小问号提示">
+        <div class="card-head"><h2>工具提示</h2><span class="en">Tooltip</span></div>
+        <div class="alias">💬 口语：鼠标放上去冒出来的小黑字 / 悬停说明 / 小气泡提示</div>
+        <div class="usage"><b>用在：</b>给图标、缩写等不易理解的东西补充说明。把鼠标移到下面文字上试试 ↓</div>
+        <div class="demo-area">
+          <p style="font-size:0.92rem">鼠标悬停到
+            <span class="tooltip">这个词<span class="tooltip-text">我是 Tooltip！鼠标移开就消失</span></span>
+            上看看
+          </p>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="进度条 progress 百分比 那根条 加载进度 百分之多少长条">
+        <div class="card-head"><h2>进度条</h2><span class="en">Progress Bar</span></div>
+        <div class="alias">💬 口语：显示百分之多少的那根长条 / 一格一格涨的条</div>
+        <div class="usage"><b>用在：</b>上传、下载等耗时任务，告诉用户「进行到哪了」。</div>
+        <div class="demo-area">
+          <div class="row">
+            <div class="progress"><div class="progress-inner" id="progress-inner"></div></div>
+            <span class="slider-value" id="progress-value">0%</span>
           </div>
-          <div class="field">
-            <label>时间</label>
-            <input class="input" type="time" />
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="加载中 loading 转圈圈 转菊花 菊花转圈 spinner 等待">
+        <div class="card-head"><h2>加载中</h2><span class="en">Loading / Spinner</span></div>
+        <div class="alias">💬 口语：转圈圈 / 转菊花 🌀 / 一直在转的那个圈</div>
+        <div class="usage"><b>用在：</b>内容正在加载、请用户稍等的时候。</div>
+        <div class="demo-area">
+          <div class="row" style="gap:20px">
+            <div class="spinner"></div>
+            <span style="font-size:0.88rem;color:var(--text-secondary)">加载中…</span>
           </div>
-          <div class="field">
-            <label>颜色</label>
-            <input class="input" type="color" value="#2a5298" style="height:40px;padding:4px" />
+        </div>
+      </div>
+
+      <!-- ============ 导航类 ============ -->
+      <div class="group-title" data-group>🧭 导航类</div>
+
+      <div class="demo-card" data-terms="标签页 tabs 页签 上面一排切换 切换卡 选项卡 tab 顶部切换">
+        <div class="card-head"><h2>标签页</h2><span class="en">Tabs</span></div>
+        <div class="alias">💬 口语：上面一排按钮、点一个换一块内容 / 页签 / 选项卡</div>
+        <div class="usage"><b>用在：</b>同一块区域切换多组内容，不用跳转页面。点下面试试 ↓</div>
+        <div class="demo-area">
+          <div class="tabs-bar">
+            <span class="tab active" data-tab="1">标签一</span>
+            <span class="tab" data-tab="2">标签二</span>
+            <span class="tab" data-tab="3">标签三</span>
+          </div>
+          <div class="tab-panel active" data-panel="1">这是标签一的内容。标签页就像笔记本的侧边索引，点哪个看哪页。</div>
+          <div class="tab-panel" data-panel="2">这是标签二的内容。切换时只有下面这块区域变化。</div>
+          <div class="tab-panel" data-panel="3">这是标签三的内容。底部高亮的横线表示当前选中的标签。</div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="折叠面板 accordion 展开 收起 点标题伸缩 手风琴 伸缩列表">
+        <div class="card-head"><h2>折叠面板</h2><span class="en">Accordion / Collapse</span></div>
+        <div class="alias">💬 口语：点标题展开、再点收起的 / 手风琴 / FAQ 那种一问一答</div>
+        <div class="usage"><b>用在：</b>内容多但不需要同时全看，如 FAQ、设置分组。点下面试试 ↓</div>
+        <div class="demo-area">
+          <details open>
+            <summary>什么是折叠面板？</summary>
+            <div class="details-body">就是你现在看到的这个——点标题展开内容，再点收起。前面的箭头会跟着转向。</div>
+          </details>
+          <details>
+            <summary>它和标签页有什么区别？</summary>
+            <div class="details-body">标签页同一时刻只显示一块内容且互相排斥；折叠面板可以同时展开好几个。</div>
+          </details>
+          <details>
+            <summary>常见使用场景？</summary>
+            <div class="details-body">常见问题解答（FAQ）、订单详情、高级设置选项。</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="面包屑 breadcrumb 路径条 首页大于大于 位置导航 你在哪">
+        <div class="card-head"><h2>面包屑</h2><span class="en">Breadcrumb</span></div>
+        <div class="alias">💬 口语：首页 &gt; 分类 &gt; 详情 那个路径条 / 显示你在哪一级的</div>
+        <div class="usage"><b>用在：</b>层级深的网站/后台，告诉用户「你在哪」，每一级都能点回去。</div>
+        <div class="demo-area">
+          <div class="breadcrumb">
+            <a href="#">首页</a><span class="sep">/</span>
+            <a href="#">电子产品</a><span class="sep">/</span>
+            <a href="#">手机</a><span class="sep">/</span>
+            <span>某某型号</span>
           </div>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>滑块 Slider</h2>
-        <div class="slider-wrap">
-          <input type="range" id="demo-slider" min="0" max="100" value="40" />
-          <span class="slider-value" id="slider-value">40</span>
+      <div class="demo-card" data-terms="分页 pagination 页码 1 2 3 下一页 翻页 上一页">
+        <div class="card-head"><h2>分页</h2><span class="en">Pagination</span></div>
+        <div class="alias">💬 口语：页码 1 2 3 下一页 / 翻页的那排数字</div>
+        <div class="usage"><b>用在：</b>列表数据太多一屏放不下，切成一页一页看。点下面试试 ↓</div>
+        <div class="demo-area">
+          <div class="row" style="gap:16px">
+            <div class="pagination">
+              <button class="page-btn">‹</button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn">›</button>
+            </div>
+            <span style="font-size:0.85rem;color:var(--text-secondary)" id="page-info">当前第 1 页</span>
+          </div>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>进度条 Progress</h2>
-        <div class="row">
-          <div class="progress"><div class="progress-inner" id="progress-inner"></div></div>
-          <span class="slider-value" id="progress-value">0%</span>
+      <div class="demo-card" data-terms="步骤条 steps 第一步第二步 流程 进度步骤 1234步">
+        <div class="card-head"><h2>步骤条</h2><span class="en">Steps</span></div>
+        <div class="alias">💬 口语：第一步 → 第二步 → 第三步 那种 / 流程图一样的横条</div>
+        <div class="usage"><b>用在：</b>多步流程（注册、下单、向导），告诉用户流程有几步、走到哪了。点圆圈试试 ↓</div>
+        <div class="demo-area">
+          <div class="steps" id="demo-steps">
+            <div class="step done" data-step="1"><div class="step-circle">1</div><div class="step-label">填写信息</div></div>
+            <div class="step-line done"></div>
+            <div class="step done" data-step="2"><div class="step-circle">2</div><div class="step-label">确认订单</div></div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3"><div class="step-circle">3</div><div class="step-label">支付</div></div>
+            <div class="step-line"></div>
+            <div class="step" data-step="4"><div class="step-circle">4</div><div class="step-label">完成</div></div>
+          </div>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>徽章 Badge</h2>
-        <div class="row">
-          <span class="badge badge-blue">进行中</span>
-          <span class="badge badge-green">已完成</span>
-          <span class="badge badge-orange">待处理</span>
-          <span class="badge badge-red">已失败</span>
-          <span class="badge badge-gray">已归档</span>
+      <!-- ============ 数据展示类 ============ -->
+      <div class="group-title" data-group>📇 数据展示类</div>
+
+      <div class="demo-card" data-terms="徽章 标签 badge tag 小色块 贴纸 状态标记 小标签">
+        <div class="card-head"><h2>徽章 / 标签</h2><span class="en">Badge / Tag</span></div>
+        <div class="alias">💬 口语：小色块 / 贴纸 / 状态后面那个彩色小胶囊</div>
+        <div class="usage"><b>用在：</b>标记状态（进行中/已完成）或分类属性，圆角小胶囊样式。</div>
+        <div class="demo-area">
+          <div class="row">
+            <span class="badge badge-blue">进行中</span>
+            <span class="badge badge-green">已完成</span>
+            <span class="badge badge-orange">待处理</span>
+            <span class="badge badge-red">已失败</span>
+            <span class="badge badge-gray">已归档</span>
+          </div>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>提示条 Alert</h2>
-        <div class="col">
-          <div class="alert alert-info">ℹ️ 信息提示：这是一条普通信息。</div>
-          <div class="alert alert-success">✅ 成功提示：操作已成功完成。</div>
-          <div class="alert alert-warning">⚠️ 警告提示：请注意潜在的风险。</div>
-          <div class="alert alert-error">❌ 错误提示：操作失败，请重试。</div>
+      <div class="demo-card" data-terms="表格 table excel 格子 数据表 行列 表格数据">
+        <div class="card-head"><h2>表格</h2><span class="en">Table</span></div>
+        <div class="alias">💬 口语：Excel 那种横竖格子 / 一行一行的数据表</div>
+        <div class="usage"><b>用在：</b>展示结构化数据（多行多列）。第一行灰底的是表头。</div>
+        <div class="demo-area">
+          <table class="table">
+            <thead>
+              <tr><th>项目</th><th>状态</th><th>进度</th><th>负责人</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>官网重构</td><td><span class="badge badge-green">已完成</span></td><td>100%</td><td>张三</td></tr>
+              <tr><td>移动端适配</td><td><span class="badge badge-blue">进行中</span></td><td>65%</td><td>李四</td></tr>
+              <tr><td>性能优化</td><td><span class="badge badge-orange">待处理</span></td><td>0%</td><td>王五</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div class="demo-card">
-        <h2>表格 Table</h2>
-        <table class="table">
-          <thead>
-            <tr><th>项目</th><th>状态</th><th>进度</th><th>负责人</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>官网重构</td><td><span class="badge badge-green">已完成</span></td><td>100%</td><td>张三</td></tr>
-            <tr><td>移动端适配</td><td><span class="badge badge-blue">进行中</span></td><td>65%</td><td>李四</td></tr>
-            <tr><td>性能优化</td><td><span class="badge badge-orange">待处理</span></td><td>0%</td><td>王五</td></tr>
-          </tbody>
-        </table>
+      <div class="demo-card" data-terms="头像 avatar 圆头像 个人图标 用户头像 圆脸图">
+        <div class="card-head"><h2>头像</h2><span class="en">Avatar</span></div>
+        <div class="alias">💬 口语：圆圆的个人头像 / 用户小圆图 / 旁边那个人头</div>
+        <div class="usage"><b>用在：</b>表示用户/账号，导航栏、评论列表、成员列表里常见。没有照片时用姓名首字代替。</div>
+        <div class="demo-area">
+          <div class="row" style="gap:20px">
+            <div class="avatar" style="width:48px;height:48px;font-size:1.1rem">郑</div>
+            <div class="avatar" style="width:36px;height:36px;font-size:0.85rem">李</div>
+            <div class="avatar" style="width:28px;height:28px;font-size:0.7rem">W</div>
+          </div>
+        </div>
       </div>
 
-      <div class="demo-card">
-        <h2>模态框 Modal</h2>
-        <button class="btn btn-primary" id="open-dialog-btn">打开模态框</button>
+      <div class="demo-card" data-terms="空状态 empty 暂无数据 没有内容 空页面 空白提示">
+        <div class="card-head"><h2>空状态</h2><span class="en">Empty State</span></div>
+        <div class="alias">💬 口语：没数据时显示的「暂无数据」画面 / 空白占位</div>
+        <div class="usage"><b>用在：</b>列表、搜索没有结果时，避免用户面对一片空白不知所措。</div>
+        <div class="demo-area">
+          <div class="empty-state">
+            <div class="icon">📭</div>
+            <p>暂无数据——这里什么都没有</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -362,13 +751,16 @@
 
   <!-- 模态框 -->
   <dialog id="demo-dialog">
-    <h3>你好 👋</h3>
-    <p>这是一个原生 <code>&lt;dialog&gt;</code> 元素实现的模态框，点击下方按钮或按 Esc 键即可关闭。</p>
-    <button class="btn btn-primary" id="close-dialog-btn">关闭</button>
+    <h3>这就是模态框（Modal）</h3>
+    <p>它弹出后背景会变暗，用户必须先处理它（关闭/确认）才能继续操作页面。按 Esc 也能关闭。</p>
+    <button class="btn btn-primary" id="close-dialog-btn">我知道了</button>
   </dialog>
 
+  <!-- Toast 容器 -->
+  <div id="toast"></div>
+
   <script>
-    // 左侧列表切换右侧页面
+    // ========== 左侧列表切换右侧页面 ==========
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -379,12 +771,39 @@
       });
     });
 
-    // 滑块数值联动
+    // ========== 控件搜索（支持口语关键词） ==========
+    const searchInput = document.getElementById('search-input');
+    const cards = document.querySelectorAll('#page-controls .demo-card');
+    const groupTitles = document.querySelectorAll('#page-controls .group-title');
+    const noResult = document.getElementById('no-result');
+
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const hay = (card.dataset.terms + ' ' + card.textContent).toLowerCase();
+        const show = !q || hay.includes(q);
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+      // 没有可见卡片时隐藏对应的分类标题
+      groupTitles.forEach(title => {
+        let el = title.nextElementSibling, any = false;
+        while (el && !el.matches('.group-title')) {
+          if (el.matches('.demo-card') && el.style.display !== 'none') { any = true; break; }
+          el = el.nextElementSibling;
+        }
+        title.style.display = any ? '' : 'none';
+      });
+      noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+    });
+
+    // ========== 滑块数值联动 ==========
     const slider = document.getElementById('demo-slider');
     const sliderValue = document.getElementById('slider-value');
     slider.addEventListener('input', () => sliderValue.textContent = slider.value);
 
-    // 进度条：进入页面时动画到 70%
+    // ========== 进度条动画 ==========
     const progressInner = document.getElementById('progress-inner');
     const progressValue = document.getElementById('progress-value');
     requestAnimationFrame(() => {
@@ -392,7 +811,52 @@
       progressValue.textContent = '70%';
     });
 
-    // 模态框
+    // ========== 标签页 ==========
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        tab.closest('.tabs-bar').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        tab.closest('.demo-area').querySelectorAll('.tab-panel').forEach(p => {
+          p.classList.toggle('active', p.dataset.panel === tab.dataset.tab);
+        });
+      });
+    });
+
+    // ========== 分页 ==========
+    document.querySelectorAll('.page-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.textContent === '‹' || btn.textContent === '›') return;
+        btn.closest('.pagination').querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('page-info').textContent = '当前第 ' + btn.textContent + ' 页';
+      });
+    });
+
+    // ========== 步骤条（点击设置当前进度） ==========
+    const stepsBox = document.getElementById('demo-steps');
+    stepsBox.querySelectorAll('.step').forEach(step => {
+      step.addEventListener('click', () => {
+        const target = Number(step.dataset.step);
+        stepsBox.querySelectorAll('.step').forEach(s => {
+          s.classList.toggle('done', Number(s.dataset.step) <= target);
+        });
+        stepsBox.querySelectorAll('.step-line').forEach((line, i) => {
+          line.classList.toggle('done', i < target - 1);
+        });
+      });
+    });
+
+    // ========== Toast ==========
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    document.getElementById('toast-btn').addEventListener('click', () => {
+      toast.textContent = '✅ 这是一条 Toast，几秒后会自己消失';
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+    });
+
+    // ========== 模态框 ==========
     const dialog = document.getElementById('demo-dialog');
     document.getElementById('open-dialog-btn').addEventListener('click', () => dialog.showModal());
     document.getElementById('close-dialog-btn').addEventListener('click', () => dialog.close());
