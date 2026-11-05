@@ -255,6 +255,43 @@
     }
     .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
 
+    /* ========== 下拉菜单 / 气泡卡片 / 抽屉 ========== */
+    .dd-wrap, .pop-wrap { position: relative; display: inline-block; }
+    .dd-menu {
+      display: none; position: absolute; top: calc(100% + 6px); left: 0;
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); min-width: 170px;
+      overflow: hidden; z-index: 30;
+    }
+    .dd-menu.open { display: block; }
+    .dd-item { padding: 10px 16px; font-size: 0.88rem; cursor: pointer; }
+    .dd-item:hover { background: #f3f7fc; }
+    .dd-item.dd-danger { color: #c0392b; }
+    .pop-panel {
+      display: none; position: absolute; top: calc(100% + 8px); left: 0;
+      width: 300px; background: #fff; border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+      z-index: 30; overflow: hidden;
+    }
+    .pop-panel.open { display: block; }
+    .pop-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .pop-close { cursor: pointer; color: var(--text-secondary); font-size: 0.95rem; }
+    .pop-close:hover { color: var(--text); }
+    .pop-body { padding: 12px 16px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+    .drawer {
+      position: fixed; top: 0; right: -420px; width: 340px; max-width: 88vw;
+      height: 100vh; background: #fff; z-index: 200;
+      transition: right 0.3s ease; box-shadow: -12px 0 40px rgba(0, 0, 0, 0.2);
+      display: flex; flex-direction: column;
+    }
+    .drawer.open { right: 0; }
+    .drawer-mask { position: fixed; inset: 0; background: rgba(30, 60, 114, 0.45); z-index: 199; display: none; }
+    .drawer-mask.open { display: block; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+    .drawer-close { cursor: pointer; color: var(--text-secondary); font-size: 1.05rem; }
+    .drawer-close:hover { color: var(--text); }
+    .drawer-body { padding: 20px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.9; }
+
     /* ========== Toast ========== */
     #toast {
       position: fixed; bottom: 36px; left: 50%;
@@ -319,22 +356,25 @@
     .empty-state .icon { font-size: 2.4rem; margin-bottom: 10px; }
     .empty-state p { font-size: 0.88rem; }
 
-    /* ========== 左侧二级列表 ========== */
-    .controls-nav { margin-top: 2px; padding: 0 12px; display: flex; flex-direction: column; gap: 1px; }
-    .nav-group {
-      font-size: 0.72rem; color: rgba(255, 255, 255, 0.5);
-      padding: 12px 14px 5px; letter-spacing: 1px;
+    /* ========== 页内控件选择器（分类胶囊 + 控件胶囊） ========== */
+    .ctrl-cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .ctrl-cat {
+      padding: 7px 16px; border-radius: 20px; cursor: pointer;
+      font-size: 0.86rem; font-family: inherit;
+      background: #fff; border: 1px solid var(--border); color: var(--text-secondary);
+      transition: all 0.15s; user-select: none;
     }
-    .nav-sub {
-      display: flex; align-items: baseline; gap: 6px;
-      padding: 7px 12px 7px 24px; border-radius: 6px;
-      font-size: 0.84rem; color: rgba(255, 255, 255, 0.7);
-      cursor: pointer; transition: all 0.15s; user-select: none;
+    .ctrl-cat:hover { border-color: var(--primary); color: var(--primary); }
+    .ctrl-cat.active { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: bold; }
+    .ctrl-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .ctrl-chip {
+      padding: 5px 12px; border-radius: 8px; cursor: pointer;
+      font-size: 0.82rem; font-family: inherit;
+      background: #fff; border: 1px solid var(--border); color: var(--text-secondary);
+      transition: all 0.15s; user-select: none;
     }
-    .nav-sub i { font-style: italic; font-size: 0.7rem; color: rgba(255, 255, 255, 0.4); }
-    .nav-sub:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
-    .nav-sub.active { background: rgba(255, 255, 255, 0.18); color: #fff; font-weight: bold; }
-    .nav-sub.active i { color: rgba(255, 255, 255, 0.7); }
+    .ctrl-chip:hover { border-color: var(--primary); color: var(--primary); }
+    .ctrl-chip.active { background: #e3edff; border-color: var(--primary); color: var(--primary); font-weight: bold; }
 
     /* ========== 词条浏览区 ========== */
     #controls-flow { display: block; }
@@ -376,9 +416,6 @@
       .sidebar { width: 100%; height: auto; position: static; padding: 14px 0; }
       .nav { flex-direction: row; overflow-x: auto; }
       .nav-item { white-space: nowrap; }
-      .controls-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
-      .nav-sub { padding: 6px 10px; }
-      .nav-group { display: none; }
       .content { padding: 20px 16px; }
     }
   </style>
@@ -389,7 +426,6 @@
     <div class="brand">个人主页<small>zyh.pages</small></div>
     <nav class="nav">
       <span class="nav-item active" data-page="controls"><span class="dot">🧩</span>UI 控件速查</span>
-      <div class="controls-nav" id="controls-nav"></div>
       <span class="nav-item" data-page="charts"><span class="dot">📊</span>数据图表<span class="soon">建设中</span></span>
       <span class="nav-item" data-page="about"><span class="dot">👤</span>关于<span class="soon">建设中</span></span>
     </nav>
@@ -400,7 +436,10 @@
     <!-- UI 控件速查词典 -->
     <section id="page-controls" class="page active">
       <h1 class="page-title">Web UI 控件速查词典</h1>
-      <p class="page-desc">设计 UI 时想用某个控件但叫不上名字？用「口语描述」搜一下，或在左侧列表逐个查看。每个词条都有：专业术语名、口语叫法、使用场景和能直接上手的演示。</p>
+      <p class="page-desc">设计 UI 时想用某个控件但叫不上名字？用「口语描述」搜一下，或在下方选分类逐个查看。每个词条都有：专业术语名、口语叫法、使用场景和能直接上手的演示。</p>
+
+      <div class="ctrl-cats" id="ctrl-cats"></div>
+      <div class="ctrl-list" id="ctrl-list"></div>
 
       <div class="detail-bar" id="detail-bar">
         <button class="bar-btn" id="prev-ctrl">← 上一个</button>
@@ -587,36 +626,6 @@
         </div>
       </div>
 
-      <div class="demo-card" data-terms="toast 气泡通知 右下角弹一下 消息提示 弹一下消失 小黑条 轻提示">
-        <div class="card-head"><h2>消息提示</h2><span class="en">Toast</span></div>
-        <div class="alias">💬 口语：屏幕下面弹一下就消失的小黑条 / 轻提示 / 气泡通知</div>
-        <div class="usage"><b>用在：</b>操作成功/失败的轻量反馈，几秒后自动消失，不打断用户。和模态框的区别：它不需要点关闭。</div>
-        <div class="demo-area">
-          <button class="btn btn-primary" id="toast-btn">点我试试 Toast</button>
-        </div>
-      </div>
-
-      <div class="demo-card" data-terms="模态框 modal 弹窗 弹出来的小窗 对话框 dialog 遮罩 中间弹出">
-        <div class="card-head"><h2>模态框</h2><span class="en">Modal / Dialog</span></div>
-        <div class="alias">💬 口语：弹出来的小窗 / 弹窗 / 背景变暗中间凸出一块</div>
-        <div class="usage"><b>用在：</b>需要用户必须处理的重要交互（确认删除、填写表单）。会挡住页面其他操作，所以不要滥用。</div>
-        <div class="demo-area">
-          <button class="btn btn-primary" id="open-dialog-btn">打开模态框</button>
-        </div>
-      </div>
-
-      <div class="demo-card" data-terms="tooltip 悬停提示 鼠标放上去出现小黑字 气泡说明 小问号提示">
-        <div class="card-head"><h2>工具提示</h2><span class="en">Tooltip</span></div>
-        <div class="alias">💬 口语：鼠标放上去冒出来的小黑字 / 悬停说明 / 小气泡提示</div>
-        <div class="usage"><b>用在：</b>给图标、缩写等不易理解的东西补充说明。把鼠标移到下面文字上试试 ↓</div>
-        <div class="demo-area">
-          <p style="font-size:0.92rem">鼠标悬停到
-            <span class="tooltip">这个词<span class="tooltip-text">我是 Tooltip！鼠标移开就消失</span></span>
-            上看看
-          </p>
-        </div>
-      </div>
-
       <div class="demo-card" data-terms="进度条 progress 百分比 那根条 加载进度 百分之多少长条">
         <div class="card-head"><h2>进度条</h2><span class="en">Progress Bar</span></div>
         <div class="alias">💬 口语：显示百分之多少的那根长条 / 一格一格涨的条</div>
@@ -638,6 +647,80 @@
             <div class="spinner"></div>
             <span style="font-size:0.88rem;color:var(--text-secondary)">加载中…</span>
           </div>
+        </div>
+      </div>
+
+      <!-- ============ 浮层类 ============ -->
+      <div class="group-title" data-group>🪟 浮层类（点击后在页面上方弹出）</div>
+
+      <div class="demo-card" data-terms="下拉菜单 dropdown menu 点按钮弹出操作 一排按钮的小面板 更多操作 三个点点开的菜单 操作菜单">
+        <div class="card-head"><h2>下拉菜单</h2><span class="en">Dropdown Menu</span></div>
+        <div class="alias">💬 口语：点一下按钮、弹出一排按钮的小面板 /「⋯ 更多」点开的那种 / 长得像下拉框，但装的是动作不是选项</div>
+        <div class="usage"><b>用在：</b>把一组次要操作收进一个按钮，如表格每行的「更多」、点头像弹出的账号菜单。注意区分：<b>下拉框（Select）选的是一个值；下拉菜单触发的是动作</b>。点外面任意位置关闭。</div>
+        <div class="demo-area">
+          <div class="dd-wrap">
+            <button class="btn btn-secondary" id="dd-btn">⋯ 更多操作</button>
+            <div class="dd-menu" id="dd-menu">
+              <div class="dd-item">✏️ 重命名</div>
+              <div class="dd-item">📤 分享</div>
+              <div class="dd-item">📋 复制一份</div>
+              <div class="dd-item dd-danger">🗑 删除</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="气泡卡片 popover 浮层 弹出面板 悬浮面板 小卡片浮窗 点击弹出的小框 悬浮的小窗">
+        <div class="card-head"><h2>气泡卡片</h2><span class="en">Popover</span></div>
+        <div class="alias">💬 口语：点一下弹出来的小浮层，里面啥都能放 / 悬浮面板 / 浮在页面上的小卡片</div>
+        <div class="usage"><b>用在：</b>展示补充信息或轻量操作，比模态框轻得多——不挡住整个页面。点外面或点 ✕ 关闭。</div>
+        <div class="demo-area">
+          <div class="pop-wrap">
+            <button class="btn btn-secondary" id="pop-btn">ℹ️ 查看详情</button>
+            <div class="pop-panel" id="pop-panel">
+              <div class="pop-head"><b>气泡卡片标题</b><span id="pop-close" class="pop-close">✕</span></div>
+              <div class="pop-body">这里是气泡卡片的内容，可以放文字、链接、小图表等任意内容。它浮在页面之上，但不打断其他操作。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="模态框 modal 弹窗 弹出来的小窗 对话框 dialog 遮罩 中间弹出">
+        <div class="card-head"><h2>模态框</h2><span class="en">Modal / Dialog</span></div>
+        <div class="alias">💬 口语：弹出来的小窗 / 弹窗 / 背景变暗、屏幕中间凸出一块</div>
+        <div class="usage"><b>用在：</b>需要用户必须处理的重要交互（确认删除、填写表单）。会挡住页面其他操作，所以不要滥用。按 Esc 可关闭。</div>
+        <div class="demo-area">
+          <button class="btn btn-primary" id="open-dialog-btn">打开模态框</button>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="抽屉 drawer 侧滑 侧边栏滑出 滑出来的页面 推拉门 侧边面板 从旁边滑出 slide 右侧滑出">
+        <div class="card-head"><h2>抽屉</h2><span class="en">Drawer</span></div>
+        <div class="alias">💬 口语：从屏幕边上滑出来的页面 / 侧滑栏 / 推拉门式的面板</div>
+        <div class="usage"><b>用在：</b>详情面板、设置项、筛选条件、移动端导航菜单。从屏幕边缘（多为右侧）滑出，带遮罩，点遮罩或关闭按钮收起。和模态框比更轻，适合「边看边操作」。</div>
+        <div class="demo-area">
+          <button class="btn btn-primary" id="drawer-open-btn">打开抽屉（从右侧滑出）</button>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="tooltip 悬停提示 鼠标放上去出现小黑字 气泡说明 小问号提示">
+        <div class="card-head"><h2>工具提示</h2><span class="en">Tooltip</span></div>
+        <div class="alias">💬 口语：鼠标放上去冒出来的小黑字 / 悬停说明 / 小气泡提示</div>
+        <div class="usage"><b>用在：</b>给图标、缩写等不易理解的东西补充说明。把鼠标移到下面文字上试试 ↓</div>
+        <div class="demo-area">
+          <p style="font-size:0.92rem">鼠标悬停到
+            <span class="tooltip">这个词<span class="tooltip-text">我是 Tooltip！鼠标移开就消失</span></span>
+            上看看
+          </p>
+        </div>
+      </div>
+
+      <div class="demo-card" data-terms="toast 气泡通知 右下角弹一下 消息提示 弹一下消失 小黑条 轻提示">
+        <div class="card-head"><h2>消息提示</h2><span class="en">Toast</span></div>
+        <div class="alias">💬 口语：屏幕下面弹一下就消失的小黑条 / 轻提示 / 气泡通知</div>
+        <div class="usage"><b>用在：</b>操作成功/失败的轻量反馈，几秒后自动消失，不打断用户。和模态框的区别：它不需要点关闭。</div>
+        <div class="demo-area">
+          <button class="btn btn-primary" id="toast-btn">点我试试 Toast</button>
         </div>
       </div>
 
@@ -811,6 +894,18 @@
     <button class="btn btn-primary" id="close-dialog-btn">我知道了</button>
   </dialog>
 
+  <!-- 抽屉 -->
+  <div class="drawer-mask" id="drawer-mask"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head"><b>这是抽屉（Drawer）</b><span class="drawer-close" id="drawer-close-btn">✕</span></div>
+    <div class="drawer-body">
+      从屏幕右侧滑出，适合放详情、设置、筛选条件等内容。<br /><br />
+      和模态框的区别：抽屉贴边、不居中，视觉上更轻，常用于「边看边操作」的场景。<br /><br />
+      点下面的按钮关闭它：
+      <button class="btn btn-primary" id="drawer-ok-btn" style="margin-top:14px">好的，收起抽屉</button>
+    </div>
+  </aside>
+
   <!-- Toast 容器 -->
   <div id="toast"></div>
 
@@ -826,7 +921,7 @@
       });
     });
 
-    // ========== 控件词典：左侧列表生成 + 单词条查看 + 搜索 ==========
+    // ========== 控件词典：页内分类选择 + 单词条查看 + 搜索 ==========
     const searchInput = document.getElementById('search-input');
     const flow = document.getElementById('controls-flow');
     const cards = [...flow.querySelectorAll('.demo-card')];
@@ -835,33 +930,50 @@
     const detailPos = document.getElementById('detail-pos');
     const prevBtn = document.getElementById('prev-ctrl');
     const nextBtn = document.getElementById('next-ctrl');
-    const navRoot = document.getElementById('controls-nav');
+    const catsRoot = document.getElementById('ctrl-cats');
+    const listRoot = document.getElementById('ctrl-list');
     let current = 0;
+    let activeCat = 0;
 
-    // 按「分类标题 + 卡片」分组，自动生成左侧二级列表
+    // 按「分类标题 + 卡片」分组
     const groups = [];
     let g = null;
     [...flow.children].forEach(el => {
       if (el.classList.contains('group-title')) { g = { el, items: [] }; groups.push(g); }
       else if (el.classList.contains('demo-card') && g) g.items.push(el);
     });
-    groups.forEach(grp => {
-      const head = document.createElement('div');
-      head.className = 'nav-group';
-      head.textContent = grp.el.textContent.trim();
-      navRoot.appendChild(head);
-      grp.items.forEach(card => {
-        const idx = cards.indexOf(card);
-        const name = card.querySelector('h2').textContent.trim();
-        const en = card.querySelector('.en');
-        const item = document.createElement('span');
-        item.className = 'nav-sub';
-        item.innerHTML = name + (en ? ' <i>' + en.textContent.trim() + '</i>' : '');
-        item.addEventListener('click', () => showDetail(idx));
-        navRoot.appendChild(item);
+
+    function renderCats() {
+      catsRoot.innerHTML = '';
+      groups.forEach((grp, gi) => {
+        const chip = document.createElement('span');
+        chip.className = 'ctrl-cat' + (gi === activeCat ? ' active' : '');
+        chip.textContent = grp.el.textContent.trim();
+        chip.addEventListener('click', () => {
+          activeCat = gi;
+          renderCats();
+          renderList();
+          showDetail(cards.indexOf(grp.items[0]));
+        });
+        catsRoot.appendChild(chip);
       });
-    });
-    const navSubs = [...navRoot.querySelectorAll('.nav-sub')];
+    }
+
+    function renderList() {
+      listRoot.innerHTML = '';
+      groups[activeCat].items.forEach(card => {
+        const idx = cards.indexOf(card);
+        const chip = document.createElement('span');
+        chip.className = 'ctrl-chip' + (idx === current ? ' active' : '');
+        chip.textContent = card.querySelector('h2').textContent.trim();
+        chip.addEventListener('click', () => showDetail(idx));
+        listRoot.appendChild(chip);
+      });
+    }
+
+    function catIndexOf(card) {
+      return groups.findIndex(grp => grp.items.includes(card));
+    }
 
     // 词条模式：一次只显示一个控件
     function showDetail(idx) {
@@ -869,7 +981,12 @@
       flow.classList.remove('browse');
       groupTitles.forEach(t => t.style.display = 'none');
       cards.forEach((c, i) => c.style.display = i === current ? '' : 'none');
-      navSubs.forEach((el, i) => el.classList.toggle('active', i === current));
+      catsRoot.style.display = '';
+      listRoot.style.display = '';
+      const ci = catIndexOf(cards[current]);
+      if (ci !== -1) activeCat = ci;
+      renderCats();
+      renderList();
       prevBtn.disabled = current === 0;
       nextBtn.disabled = current === cards.length - 1;
       const name = cards[current].querySelector('h2').textContent.trim();
@@ -899,13 +1016,16 @@
         }
         title.style.display = any ? '' : 'none';
       });
-      navSubs.forEach(el => el.classList.remove('active'));
+      catsRoot.style.display = 'none';
+      listRoot.style.display = 'none';
       prevBtn.disabled = true;
       nextBtn.disabled = true;
       detailPos.textContent = '🔎 找到 ' + n + ' 个匹配控件（清空搜索框可返回逐个查看）';
       noResult.style.display = n === 0 ? 'block' : 'none';
     });
 
+    renderCats();
+    renderList();
     showDetail(0);
 
     // ========== 滑块数值联动 ==========
@@ -959,12 +1079,55 @@
     // ========== Toast ==========
     const toast = document.getElementById('toast');
     let toastTimer;
-    document.getElementById('toast-btn').addEventListener('click', () => {
-      toast.textContent = '✅ 这是一条 Toast，几秒后会自己消失';
+    function showToast(text) {
+      toast.textContent = text;
       toast.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    document.getElementById('toast-btn').addEventListener('click', () => showToast('✅ 这是一条 Toast，几秒后会自己消失'));
+
+    // ========== 下拉菜单 ==========
+    const ddMenu = document.getElementById('dd-menu');
+    document.getElementById('dd-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      ddMenu.classList.toggle('open');
     });
+    ddMenu.querySelectorAll('.dd-item').forEach(item => {
+      item.addEventListener('click', () => {
+        ddMenu.classList.remove('open');
+        showToast('执行了动作：「' + item.textContent.trim() + '」');
+      });
+    });
+
+    // ========== 气泡卡片 ==========
+    const popPanel = document.getElementById('pop-panel');
+    document.getElementById('pop-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      popPanel.classList.toggle('open');
+    });
+    document.getElementById('pop-close').addEventListener('click', () => popPanel.classList.remove('open'));
+
+    // 点击空白处关闭下拉菜单 / 气泡卡片
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dd-wrap')) ddMenu.classList.remove('open');
+      if (!e.target.closest('.pop-wrap')) popPanel.classList.remove('open');
+    });
+
+    // ========== 抽屉 ==========
+    const drawer = document.getElementById('drawer');
+    const drawerMask = document.getElementById('drawer-mask');
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      drawerMask.classList.remove('open');
+    }
+    document.getElementById('drawer-open-btn').addEventListener('click', () => {
+      drawer.classList.add('open');
+      drawerMask.classList.add('open');
+    });
+    document.getElementById('drawer-close-btn').addEventListener('click', closeDrawer);
+    document.getElementById('drawer-ok-btn').addEventListener('click', closeDrawer);
+    drawerMask.addEventListener('click', closeDrawer);
 
     // ========== 模态框 ==========
     const dialog = document.getElementById('demo-dialog');
