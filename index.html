@@ -5,32 +5,397 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>个人主页</title>
   <style>
+    :root {
+      --primary: #2a5298;
+      --primary-dark: #1e3c72;
+      --primary-light: #3d6bc4;
+      --bg: #f0f4fa;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --text-secondary: #7a8ba0;
+      --border: #e3eaf3;
+      --radius: 10px;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
+      display: flex;
       min-height: 100vh;
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ========== 左侧列表 ========== */
+    .sidebar {
+      width: 230px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    .brand {
+      font-size: 1.15rem;
+      font-weight: bold;
+      padding: 0 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .brand small { display: block; font-size: 0.75rem; font-weight: normal; opacity: 0.65; margin-top: 4px; }
+    .nav { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
+    .nav-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #fff;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.75);
+      transition: all 0.2s;
+      user-select: none;
     }
-    .card {
-      text-align: center;
-      padding: 3rem 4rem;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    .nav-item:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .nav-item.active { background: rgba(255, 255, 255, 0.18); color: #fff; font-weight: bold; }
+    .nav-item .dot { font-size: 1rem; }
+    .nav-item .soon { margin-left: auto; font-size: 0.68rem; background: rgba(255,255,255,0.2); padding: 2px 7px; border-radius: 20px; }
+
+    /* ========== 右侧内容 ========== */
+    .content { flex: 1; padding: 32px 40px; max-width: 980px; }
+    .page { display: none; animation: fadeIn 0.25s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .page-title { font-size: 1.5rem; margin-bottom: 6px; }
+    .page-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px; }
+
+    .demo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 20px;
     }
-    h1 { font-size: 2.2rem; margin-bottom: 0.8rem; }
-    p { opacity: 0.85; line-height: 1.8; }
+    .demo-card h2 { font-size: 1.02rem; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .col { display: flex; flex-direction: column; gap: 14px; }
+
+    /* ========== 按钮 ========== */
+    .btn {
+      border: none; cursor: pointer;
+      padding: 9px 20px; font-size: 0.9rem;
+      border-radius: 8px; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .btn:active { transform: scale(0.96); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-secondary { background: #eef2f8; color: var(--text); }
+    .btn-secondary:hover { background: #e0e8f2; }
+    .btn-danger { background: #e74c3c; color: #fff; }
+    .btn-danger:hover { background: #f0604f; }
+    .btn-ghost { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-ghost:hover { background: rgba(42, 82, 152, 0.08); }
+    .btn:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; transform: none; }
+
+    /* ========== 输入类 ========== */
+    .field { display: flex; flex-direction: column; gap: 6px; min-width: 220px; }
+    .field label { font-size: 0.82rem; color: var(--text-secondary); }
+    .input, .textarea, .select {
+      padding: 9px 12px; font-size: 0.9rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-family: inherit; outline: none; transition: border-color 0.15s;
+      background: #fff; color: var(--text);
+    }
+    .input:focus, .textarea:focus, .select:focus { border-color: var(--primary); }
+    .input:disabled, .textarea:disabled { background: #f1f5f9; cursor: not-allowed; }
+    .textarea { resize: vertical; min-height: 64px; }
+
+    /* ========== 复选 / 单选 / 开关 ========== */
+    .check { display: flex; align-items: center; gap: 7px; font-size: 0.9rem; cursor: pointer; }
+    .check input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch .slider-track {
+      position: absolute; inset: 0; background: #cbd5e1;
+      border-radius: 24px; cursor: pointer; transition: background 0.2s;
+    }
+    .switch .slider-track::before {
+      content: ""; position: absolute; width: 18px; height: 18px;
+      left: 3px; top: 3px; background: #fff; border-radius: 50%;
+      transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .switch input:checked + .slider-track { background: var(--primary); }
+    .switch input:checked + .slider-track::before { transform: translateX(20px); }
+
+    /* ========== 滑块 / 进度条 ========== */
+    .slider-wrap { display: flex; align-items: center; gap: 12px; min-width: 260px; }
+    input[type="range"] { flex: 1; accent-color: var(--primary); cursor: pointer; }
+    .slider-value { min-width: 34px; text-align: center; font-size: 0.88rem; color: var(--primary); font-weight: bold; }
+    .progress { background: #e8eef6; border-radius: 20px; height: 12px; overflow: hidden; flex: 1; min-width: 240px; }
+    .progress-inner {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: 20px; transition: width 1s ease;
+    }
+
+    /* ========== 徽章 ========== */
+    .badge {
+      display: inline-block; padding: 4px 12px;
+      font-size: 0.78rem; border-radius: 20px; font-weight: bold;
+    }
+    .badge-blue   { background: #e3edff; color: var(--primary); }
+    .badge-green  { background: #e2f7ec; color: #178a50; }
+    .badge-orange { background: #fff1e0; color: #c26a00; }
+    .badge-red    { background: #fde8e8; color: #c0392b; }
+    .badge-gray   { background: #eef1f5; color: #64748b; }
+
+    /* ========== 提示条 ========== */
+    .alert {
+      padding: 12px 16px; border-radius: 8px;
+      font-size: 0.88rem; line-height: 1.6;
+      border: 1px solid transparent;
+    }
+    .alert-info    { background: #e8f2ff; color: #1d5bbf; border-color: #c9e1ff; }
+    .alert-success { background: #e8f9f0; color: #147a4c; border-color: #c3ecd8; }
+    .alert-warning { background: #fff7e6; color: #9a5b00; border-color: #ffe3b3; }
+    .alert-error   { background: #fdeeee; color: #a93226; border-color: #f5c6c6; }
+
+    /* ========== 表格 ========== */
+    .table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .table th, .table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    .table th { background: #f6f9fc; color: var(--text-secondary); font-weight: bold; }
+    .table tr:hover td { background: #f6f9fc; }
+
+    /* ========== 模态框 ========== */
+    dialog {
+      border: none; border-radius: 14px; padding: 28px 30px;
+      width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    dialog::backdrop { background: rgba(30, 60, 114, 0.45); backdrop-filter: blur(2px); }
+    dialog h3 { margin-bottom: 10px; }
+    dialog p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+
+    /* ========== 占位页 ========== */
+    .placeholder {
+      background: var(--card-bg); border: 1px dashed var(--border);
+      border-radius: var(--radius); padding: 90px 20px; text-align: center;
+      color: var(--text-secondary);
+    }
+    .placeholder .icon { font-size: 2.6rem; margin-bottom: 14px; }
+
+    /* ========== 移动端适配 ========== */
+    @media (max-width: 720px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; padding: 14px 0; }
+      .nav { flex-direction: row; overflow-x: auto; }
+      .nav-item { white-space: nowrap; }
+      .content { padding: 20px 16px; }
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>你好，欢迎 👋</h1>
-    <p>个人主页搭建中，敬请期待</p>
-  </div>
+  <!-- 左侧列表 -->
+  <aside class="sidebar">
+    <div class="brand">个人主页<small>zyh.pages</small></div>
+    <nav class="nav">
+      <span class="nav-item active" data-page="controls"><span class="dot">🧩</span>UI 控件展示</span>
+      <span class="nav-item" data-page="charts"><span class="dot">📊</span>数据图表<span class="soon">建设中</span></span>
+      <span class="nav-item" data-page="about"><span class="dot">👤</span>关于<span class="soon">建设中</span></span>
+    </nav>
+  </aside>
+
+  <!-- 右侧内容 -->
+  <main class="content">
+    <!-- 第一个页面：Web 常用 UI 控件全展示 -->
+    <section id="page-controls" class="page active">
+      <h1 class="page-title">Web 常用 UI 控件展示</h1>
+      <p class="page-desc">纯 HTML + CSS + JavaScript 实现，涵盖日常开发中的常用控件</p>
+
+      <div class="demo-card">
+        <h2>按钮 Button</h2>
+        <div class="row">
+          <button class="btn btn-primary">主要按钮</button>
+          <button class="btn btn-secondary">次要按钮</button>
+          <button class="btn btn-danger">危险按钮</button>
+          <button class="btn btn-ghost">幽灵按钮</button>
+          <button class="btn btn-primary" disabled>禁用按钮</button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>输入框 Input</h2>
+        <div class="row">
+          <div class="field">
+            <label>文本框</label>
+            <input class="input" type="text" placeholder="请输入内容…" />
+          </div>
+          <div class="field">
+            <label>密码框</label>
+            <input class="input" type="password" placeholder="请输入密码" />
+          </div>
+          <div class="field">
+            <label>禁用状态</label>
+            <input class="input" type="text" value="不可编辑" disabled />
+          </div>
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label>多行文本 Textarea</label>
+          <textarea class="textarea" placeholder="请输入多行内容…"></textarea>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>选择类 Select / Checkbox / Radio / Switch</h2>
+        <div class="row" style="align-items:flex-start">
+          <div class="field">
+            <label>下拉选择</label>
+            <select class="select">
+              <option>选项一</option>
+              <option>选项二</option>
+              <option>选项三</option>
+            </select>
+          </div>
+          <div class="col">
+            <label class="check"><input type="checkbox" checked /> 复选项 A</label>
+            <label class="check"><input type="checkbox" /> 复选项 B</label>
+          </div>
+          <div class="col">
+            <label class="check"><input type="radio" name="demo-radio" checked /> 单选项 1</label>
+            <label class="check"><input type="radio" name="demo-radio" /> 单选项 2</label>
+          </div>
+          <div class="col">
+            <label class="check"><span class="switch"><input type="checkbox" checked /><span class="slider-track"></span></span> 开关：开</label>
+            <label class="check"><span class="switch"><input type="checkbox" /><span class="slider-track"></span></span> 开关：关</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>日期时间与颜色</h2>
+        <div class="row">
+          <div class="field">
+            <label>日期</label>
+            <input class="input" type="date" />
+          </div>
+          <div class="field">
+            <label>时间</label>
+            <input class="input" type="time" />
+          </div>
+          <div class="field">
+            <label>颜色</label>
+            <input class="input" type="color" value="#2a5298" style="height:40px;padding:4px" />
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>滑块 Slider</h2>
+        <div class="slider-wrap">
+          <input type="range" id="demo-slider" min="0" max="100" value="40" />
+          <span class="slider-value" id="slider-value">40</span>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>进度条 Progress</h2>
+        <div class="row">
+          <div class="progress"><div class="progress-inner" id="progress-inner"></div></div>
+          <span class="slider-value" id="progress-value">0%</span>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>徽章 Badge</h2>
+        <div class="row">
+          <span class="badge badge-blue">进行中</span>
+          <span class="badge badge-green">已完成</span>
+          <span class="badge badge-orange">待处理</span>
+          <span class="badge badge-red">已失败</span>
+          <span class="badge badge-gray">已归档</span>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>提示条 Alert</h2>
+        <div class="col">
+          <div class="alert alert-info">ℹ️ 信息提示：这是一条普通信息。</div>
+          <div class="alert alert-success">✅ 成功提示：操作已成功完成。</div>
+          <div class="alert alert-warning">⚠️ 警告提示：请注意潜在的风险。</div>
+          <div class="alert alert-error">❌ 错误提示：操作失败，请重试。</div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>表格 Table</h2>
+        <table class="table">
+          <thead>
+            <tr><th>项目</th><th>状态</th><th>进度</th><th>负责人</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>官网重构</td><td><span class="badge badge-green">已完成</span></td><td>100%</td><td>张三</td></tr>
+            <tr><td>移动端适配</td><td><span class="badge badge-blue">进行中</span></td><td>65%</td><td>李四</td></tr>
+            <tr><td>性能优化</td><td><span class="badge badge-orange">待处理</span></td><td>0%</td><td>王五</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo-card">
+        <h2>模态框 Modal</h2>
+        <button class="btn btn-primary" id="open-dialog-btn">打开模态框</button>
+      </div>
+    </section>
+
+    <!-- 占位页面 -->
+    <section id="page-charts" class="page">
+      <h1 class="page-title">数据图表</h1>
+      <div class="placeholder"><div class="icon">📊</div>这个页面正在建设中，敬请期待</div>
+    </section>
+
+    <section id="page-about" class="page">
+      <h1 class="page-title">关于</h1>
+      <div class="placeholder"><div class="icon">👤</div>这个页面正在建设中，敬请期待</div>
+    </section>
+  </main>
+
+  <!-- 模态框 -->
+  <dialog id="demo-dialog">
+    <h3>你好 👋</h3>
+    <p>这是一个原生 <code>&lt;dialog&gt;</code> 元素实现的模态框，点击下方按钮或按 Esc 键即可关闭。</p>
+    <button class="btn btn-primary" id="close-dialog-btn">关闭</button>
+  </dialog>
+
+  <script>
+    // 左侧列表切换右侧页面
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + item.dataset.page).classList.add('active');
+      });
+    });
+
+    // 滑块数值联动
+    const slider = document.getElementById('demo-slider');
+    const sliderValue = document.getElementById('slider-value');
+    slider.addEventListener('input', () => sliderValue.textContent = slider.value);
+
+    // 进度条：进入页面时动画到 70%
+    const progressInner = document.getElementById('progress-inner');
+    const progressValue = document.getElementById('progress-value');
+    requestAnimationFrame(() => {
+      progressInner.style.width = '70%';
+      progressValue.textContent = '70%';
+    });
+
+    // 模态框
+    const dialog = document.getElementById('demo-dialog');
+    document.getElementById('open-dialog-btn').addEventListener('click', () => dialog.showModal());
+    document.getElementById('close-dialog-btn').addEventListener('click', () => dialog.close());
+  </script>
 </body>
 </html>
