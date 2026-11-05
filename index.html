@@ -45,7 +45,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
     .brand small { display: block; font-size: 0.75rem; font-weight: normal; opacity: 0.65; margin-top: 4px; }
-    .nav { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
+    .nav { margin-top: 14px; display: flex; flex-direction: column; gap: 4px; padding: 0 12px; flex: 1; min-height: 0; overflow-y: auto; }
     .nav-item {
       display: flex; align-items: center; gap: 10px;
       padding: 11px 14px; border-radius: 8px;
@@ -59,7 +59,7 @@
     .nav-item .soon { margin-left: auto; font-size: 0.68rem; background: rgba(255,255,255,0.2); padding: 2px 7px; border-radius: 20px; }
 
     /* ========== 右侧内容 ========== */
-    .content { flex: 1; padding: 32px 40px; max-width: 980px; }
+    .content { flex: 1; padding: 32px 40px; min-width: 0; }
     .page { display: none; animation: fadeIn 0.25s ease; }
     .page.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -319,6 +319,49 @@
     .empty-state .icon { font-size: 2.4rem; margin-bottom: 10px; }
     .empty-state p { font-size: 0.88rem; }
 
+    /* ========== 左侧二级列表 ========== */
+    .controls-nav { margin-top: 2px; padding: 0 12px; display: flex; flex-direction: column; gap: 1px; }
+    .nav-group {
+      font-size: 0.72rem; color: rgba(255, 255, 255, 0.5);
+      padding: 12px 14px 5px; letter-spacing: 1px;
+    }
+    .nav-sub {
+      display: flex; align-items: baseline; gap: 6px;
+      padding: 7px 12px 7px 24px; border-radius: 6px;
+      font-size: 0.84rem; color: rgba(255, 255, 255, 0.7);
+      cursor: pointer; transition: all 0.15s; user-select: none;
+    }
+    .nav-sub i { font-style: italic; font-size: 0.7rem; color: rgba(255, 255, 255, 0.4); }
+    .nav-sub:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .nav-sub.active { background: rgba(255, 255, 255, 0.18); color: #fff; font-weight: bold; }
+    .nav-sub.active i { color: rgba(255, 255, 255, 0.7); }
+
+    /* ========== 词条浏览区 ========== */
+    #controls-flow { display: block; }
+    #controls-flow.browse {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+      gap: 18px; align-items: start;
+    }
+    #controls-flow.browse .group-title { grid-column: 1 / -1; margin-top: 8px; }
+    #controls-flow.browse .demo-card { margin-bottom: 0; }
+
+    /* ========== 词条导航条 ========== */
+    .detail-bar {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px 12px; margin-bottom: 18px;
+    }
+    .detail-bar .bar-btn {
+      border: none; background: #eef2f8; color: var(--text);
+      padding: 7px 14px; border-radius: 8px; cursor: pointer;
+      font-size: 0.84rem; font-family: inherit; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .detail-bar .bar-btn:hover:not(:disabled) { background: var(--primary); color: #fff; }
+    .detail-bar .bar-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .detail-pos { flex: 1; text-align: center; font-size: 0.9rem; font-weight: bold; color: var(--primary-dark); }
+
     /* ========== 占位页 ========== */
     .placeholder {
       background: var(--card-bg); border: 1px dashed var(--border);
@@ -333,6 +376,9 @@
       .sidebar { width: 100%; height: auto; position: static; padding: 14px 0; }
       .nav { flex-direction: row; overflow-x: auto; }
       .nav-item { white-space: nowrap; }
+      .controls-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+      .nav-sub { padding: 6px 10px; }
+      .nav-group { display: none; }
       .content { padding: 20px 16px; }
     }
   </style>
@@ -343,6 +389,7 @@
     <div class="brand">个人主页<small>zyh.pages</small></div>
     <nav class="nav">
       <span class="nav-item active" data-page="controls"><span class="dot">🧩</span>UI 控件速查</span>
+      <div class="controls-nav" id="controls-nav"></div>
       <span class="nav-item" data-page="charts"><span class="dot">📊</span>数据图表<span class="soon">建设中</span></span>
       <span class="nav-item" data-page="about"><span class="dot">👤</span>关于<span class="soon">建设中</span></span>
     </nav>
@@ -353,7 +400,13 @@
     <!-- UI 控件速查词典 -->
     <section id="page-controls" class="page active">
       <h1 class="page-title">Web UI 控件速查词典</h1>
-      <p class="page-desc">设计 UI 时想用某个控件但叫不上名字？在这里用「口语描述」搜一下，就能看到它长什么样、专业术语叫什么。每个控件都可以直接上手玩。</p>
+      <p class="page-desc">设计 UI 时想用某个控件但叫不上名字？用「口语描述」搜一下，或在左侧列表逐个查看。每个词条都有：专业术语名、口语叫法、使用场景和能直接上手的演示。</p>
+
+      <div class="detail-bar" id="detail-bar">
+        <button class="bar-btn" id="prev-ctrl">← 上一个</button>
+        <span class="detail-pos" id="detail-pos"></span>
+        <button class="bar-btn" id="next-ctrl">下一个 →</button>
+      </div>
 
       <div class="search-box">
         <span class="search-icon">🔍</span>
@@ -362,6 +415,7 @@
       </div>
       <div class="no-result" id="no-result">😖 没找到匹配的控件，换个说法试试？</div>
 
+      <div id="controls-flow">
       <!-- ============ 输入类 ============ -->
       <div class="group-title" data-group>⌨️ 输入类</div>
 
@@ -735,6 +789,7 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- 占位页面 -->
@@ -771,32 +826,87 @@
       });
     });
 
-    // ========== 控件搜索（支持口语关键词） ==========
+    // ========== 控件词典：左侧列表生成 + 单词条查看 + 搜索 ==========
     const searchInput = document.getElementById('search-input');
-    const cards = document.querySelectorAll('#page-controls .demo-card');
-    const groupTitles = document.querySelectorAll('#page-controls .group-title');
+    const flow = document.getElementById('controls-flow');
+    const cards = [...flow.querySelectorAll('.demo-card')];
+    const groupTitles = [...flow.querySelectorAll('.group-title')];
     const noResult = document.getElementById('no-result');
+    const detailPos = document.getElementById('detail-pos');
+    const prevBtn = document.getElementById('prev-ctrl');
+    const nextBtn = document.getElementById('next-ctrl');
+    const navRoot = document.getElementById('controls-nav');
+    let current = 0;
 
+    // 按「分类标题 + 卡片」分组，自动生成左侧二级列表
+    const groups = [];
+    let g = null;
+    [...flow.children].forEach(el => {
+      if (el.classList.contains('group-title')) { g = { el, items: [] }; groups.push(g); }
+      else if (el.classList.contains('demo-card') && g) g.items.push(el);
+    });
+    groups.forEach(grp => {
+      const head = document.createElement('div');
+      head.className = 'nav-group';
+      head.textContent = grp.el.textContent.trim();
+      navRoot.appendChild(head);
+      grp.items.forEach(card => {
+        const idx = cards.indexOf(card);
+        const name = card.querySelector('h2').textContent.trim();
+        const en = card.querySelector('.en');
+        const item = document.createElement('span');
+        item.className = 'nav-sub';
+        item.innerHTML = name + (en ? ' <i>' + en.textContent.trim() + '</i>' : '');
+        item.addEventListener('click', () => showDetail(idx));
+        navRoot.appendChild(item);
+      });
+    });
+    const navSubs = [...navRoot.querySelectorAll('.nav-sub')];
+
+    // 词条模式：一次只显示一个控件
+    function showDetail(idx) {
+      current = Math.max(0, Math.min(idx, cards.length - 1));
+      flow.classList.remove('browse');
+      groupTitles.forEach(t => t.style.display = 'none');
+      cards.forEach((c, i) => c.style.display = i === current ? '' : 'none');
+      navSubs.forEach((el, i) => el.classList.toggle('active', i === current));
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === cards.length - 1;
+      const name = cards[current].querySelector('h2').textContent.trim();
+      detailPos.textContent = name + '（' + (current + 1) + ' / ' + cards.length + '）';
+      noResult.style.display = 'none';
+    }
+    prevBtn.addEventListener('click', () => showDetail(current - 1));
+    nextBtn.addEventListener('click', () => showDetail(current + 1));
+
+    // 搜索模式：匹配的多张卡片排成网格
     searchInput.addEventListener('input', () => {
       const q = searchInput.value.trim().toLowerCase();
-      let visibleCount = 0;
+      if (!q) { showDetail(current); return; }
+      flow.classList.add('browse');
+      let n = 0;
       cards.forEach(card => {
         const hay = (card.dataset.terms + ' ' + card.textContent).toLowerCase();
-        const show = !q || hay.includes(q);
+        const show = hay.includes(q);
         card.style.display = show ? '' : 'none';
-        if (show) visibleCount++;
+        if (show) n++;
       });
-      // 没有可见卡片时隐藏对应的分类标题
       groupTitles.forEach(title => {
         let el = title.nextElementSibling, any = false;
-        while (el && !el.matches('.group-title')) {
-          if (el.matches('.demo-card') && el.style.display !== 'none') { any = true; break; }
+        while (el && !el.classList.contains('group-title')) {
+          if (el.classList.contains('demo-card') && el.style.display !== 'none') { any = true; break; }
           el = el.nextElementSibling;
         }
         title.style.display = any ? '' : 'none';
       });
-      noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+      navSubs.forEach(el => el.classList.remove('active'));
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      detailPos.textContent = '🔎 找到 ' + n + ' 个匹配控件（清空搜索框可返回逐个查看）';
+      noResult.style.display = n === 0 ? 'block' : 'none';
     });
+
+    showDetail(0);
 
     // ========== 滑块数值联动 ==========
     const slider = document.getElementById('demo-slider');
